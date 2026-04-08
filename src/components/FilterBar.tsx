@@ -9,6 +9,7 @@ interface Props {
   languages: string[];
   total: number;
   filtered: number;
+  viewToggle?: React.ReactNode;
 }
 
 const DIFFICULTIES: Difficulty[] = ["easy", "medium", "hard"];
@@ -20,6 +21,7 @@ export function FilterBar({
   languages,
   total,
   filtered,
+  viewToggle,
 }: Props) {
   const toggle = <K extends "difficulties" | "genres" | "languages">(
     key: K,
@@ -46,21 +48,24 @@ export function FilterBar({
       className="mx-auto max-w-6xl px-6 mt-14 mb-10"
       aria-label="filters"
     >
-      {/* Top line: programme marker + counts */}
-      <div className="flex items-baseline justify-between border-b border-dust/25 pb-3">
-        <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.3em] text-dust">
+      {/* Top line: programme marker + counts + view toggle */}
+      <div className="flex items-center justify-between gap-4 border-b border-dust/25 pb-3">
+        <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.3em] text-dust hidden sm:block">
           ★ ★ ★   Programme   ★ ★ ★
         </p>
-        <p className="font-mono text-xs text-cream/80">
-          {filtered === total ? (
-            <>showing all <span className="text-marquee">{total}</span></>
-          ) : (
-            <>
-              showing <span className="text-marquee">{filtered}</span>
-              <span className="text-dust"> / {total}</span>
-            </>
-          )}
-        </p>
+        <div className="flex items-center gap-4 ml-auto">
+          <p className="font-mono text-xs text-cream/80">
+            {filtered === total ? (
+              <>showing all <span className="text-marquee">{total}</span></>
+            ) : (
+              <>
+                showing <span className="text-marquee">{filtered}</span>
+                <span className="text-dust"> / {total}</span>
+              </>
+            )}
+          </p>
+          {viewToggle}
+        </div>
       </div>
 
       {/* Search */}

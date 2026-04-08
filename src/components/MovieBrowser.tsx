@@ -4,13 +4,17 @@ import { useMemo, useState } from "react";
 import type { Movie, FilterCriteria } from "@/lib/types";
 import { EMPTY_CRITERIA } from "@/lib/types";
 import { applyFilters, collectFacets } from "@/lib/filters";
+import { useViewMode } from "@/lib/useViewMode";
 import { Marquee } from "./Marquee";
 import { FilterBar } from "./FilterBar";
 import { MovieCard } from "./MovieCard";
+import { MovieList } from "./MovieList";
 import { RandomPickButton } from "./RandomPickButton";
+import { ViewToggle } from "./ViewToggle";
 
 export function MovieBrowser({ movies }: { movies: Movie[] }) {
   const [criteria, setCriteria] = useState<FilterCriteria>(EMPTY_CRITERIA);
+  const [view, setView] = useViewMode();
 
   const { genres, languages } = useMemo(() => collectFacets(movies), [movies]);
 
@@ -30,6 +34,7 @@ export function MovieBrowser({ movies }: { movies: Movie[] }) {
         languages={languages}
         total={movies.length}
         filtered={filtered.length}
+        viewToggle={<ViewToggle value={view} onChange={setView} />}
       />
 
       <RandomPickButton pool={filtered} />
@@ -43,6 +48,8 @@ export function MovieBrowser({ movies }: { movies: Movie[] }) {
             Try loosening the programme.
           </p>
         </div>
+      ) : view === "list" ? (
+        <MovieList movies={filtered} />
       ) : (
         <section className="mx-auto max-w-6xl px-6 pb-24">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">

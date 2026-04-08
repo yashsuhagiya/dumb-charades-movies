@@ -6,7 +6,13 @@ const LEVEL: Record<Difficulty, number> = { easy: 1, medium: 2, hard: 3 };
  * Difficulty rendered as 1/2/3 marquee bulbs instead of a colored pill.
  * Lit bulbs glow amber; unlit are dim outlines.
  */
-export function DifficultyBulbs({ level }: { level: Difficulty }) {
+export function DifficultyBulbs({
+  level,
+  hideLabelOnMobile = false,
+}: {
+  level: Difficulty;
+  hideLabelOnMobile?: boolean;
+}) {
   const lit = LEVEL[level];
   return (
     <div
@@ -23,7 +29,12 @@ export function DifficultyBulbs({ level }: { level: Difficulty }) {
           }
         />
       ))}
-      <span className="ml-2 text-[10px] uppercase tracking-[0.2em] text-dust">
+      <span
+        className={
+          "ml-2 text-[10px] uppercase tracking-[0.2em] text-cream/70 " +
+          (hideLabelOnMobile ? "hidden sm:inline" : "")
+        }
+      >
         {level}
       </span>
     </div>
