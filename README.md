@@ -2,7 +2,7 @@
 
 A hand-curated list of movies for dumb charades nights — heavy on pre-1990 Bollywood, with a sprinkling of Hollywood classics. Filter by difficulty, language, or genre; search by title; or raise the curtain and let a random pick decide.
 
-Live: _(add your Vercel URL once deployed)_
+Live: [https://dumb-charades-movies.vercel.app/](https://dumb-charades-movies.vercel.app/)
 
 ## What's inside
 
