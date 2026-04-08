@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Fraunces, DM_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Spotlight } from "@/components/Spotlight";
 
@@ -123,6 +124,7 @@ export default function RootLayout({
         </Script>
         <Spotlight />
         <div className="relative z-10 flex flex-col min-h-dvh">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
