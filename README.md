@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 The Dumb Charades Marquee
 
-## Getting Started
+A hand-curated list of movies for dumb charades nights — heavy on pre-1990 Bollywood, with a sprinkling of Hollywood classics. Filter by difficulty, language, or genre; search by title; or raise the curtain and let a random pick decide.
 
-First, run the development server:
+Live: _(add your Vercel URL once deployed)_
+
+## What's inside
+
+- **~250 movies** in [`data/movies.json`](data/movies.json) — each with difficulty (easy/medium/hard), language, industry, genres, year, and a short gestural hint for the actor.
+- **Fully static** Next.js 16 app. No backend, no database, no API keys. The JSON is bundled at build time and filtering runs in-memory in the browser.
+- **Curtain-reveal random picker** — two panels sweep in and part to reveal the chosen movie. Clicking "another one" while the curtain is already up swaps instantly without re-running the animation.
+- **Midnight Cinema** design direction: warm amber marquee bulbs, film grain, Fraunces + DM Mono typography, cursor-following spotlight.
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, SSG, Turbopack)
+- [Tailwind CSS v4](https://tailwindcss.com) (CSS-based `@theme` config)
+- TypeScript
+- Zero runtime dependencies beyond `next` / `react` — no UI kit, no animation library. All motion is pure CSS.
+- [Bun](https://bun.sh) as package manager
+
+## Running locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run build
+```
 
-## Learn More
+Produces a fully static output (`○ prerendered`) — deployable to Vercel, Netlify, GitHub Pages, or any static host.
 
-To learn more about Next.js, take a look at the following resources:
+## Project structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+dumb-charades-movies/
+├── data/
+│   └── movies.json              # the catalog — edit this to add/remove titles
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx           # fonts, spotlight, metadata
+│   │   ├── page.tsx             # imports movies.json at build time
+│   │   ├── globals.css          # palette, animations, grain overlay
+│   │   └── icon.svg             # 🎬 favicon
+│   ├── components/
+│   │   ├── MovieBrowser.tsx     # state owner: filters + picker + grid
+│   │   ├── Marquee.tsx          # pill header with animated bulbs
+│   │   ├── FilterBar.tsx        # search + difficulty/language/genre chips
+│   │   ├── MovieCard.tsx        # individual ticket-stub card
+│   │   ├── RandomPickButton.tsx # CTA + curtain-reveal modal
+│   │   ├── DifficultyBulbs.tsx  # 1/2/3 marquee bulbs
+│   │   └── Spotlight.tsx        # cursor-following glow
+│   └── lib/
+│       ├── types.ts             # Movie, FilterCriteria
+│       └── filters.ts           # applyFilters, pickRandom, collectFacets
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Adding movies
 
-## Deploy on Vercel
+Append to [`data/movies.json`](data/movies.json):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```jsonc
+{
+  "id": "unique-slug",
+  "title": "Movie Title",
+  "language": "hindi",
+  "industry": "bollywood",
+  "year": 1975,
+  "difficulty": "easy",
+  "genres": ["drama", "action"],
+  "hint": "one-line gestural clue for the actor"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Difficulty is a charades-context judgement (how hard is it to *guess*), not the movie's IMDb rating. Hints should be short and visual — actions and objects the actor can mime.
+
+## Design notes
+
+The filter contract is in [`src/lib/filters.ts`](src/lib/filters.ts):
+
+- **Difficulty / language**: OR within a category, AND across (clicking "hindi" + "english" shows both; adding "hard" narrows to hard titles in those languages).
+- **Genres**: OR — picking "comedy" + "drama" shows any movie tagged with either. Chosen for chip-pick ergonomics; if you'd rather require *all* selected genres, swap `.some` for `.every` in `applyFilters`.
+- **Search**: case-insensitive substring match on title, independent of the chip filters.
+
+Random picker avoids immediate repeats via a rolling window of the last 5 picks (see `avoidRepeats` in [`RandomPickButton.tsx`](src/components/RandomPickButton.tsx)).
