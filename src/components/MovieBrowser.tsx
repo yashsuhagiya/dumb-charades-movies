@@ -57,6 +57,36 @@ export function MovieBrowser({ movies }: { movies: Movie[] }) {
         <p className="text-center font-mono text-[10px] uppercase tracking-[0.3em] text-dust">
           ⸺ Exit through the lobby ⸺
         </p>
+        <p className="mt-5 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-dust">
+          Curated by{" "}
+          <span className="text-cream">Yash Suhagiya</span>
+        </p>
+        <nav className="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em]">
+          <a
+            href="mailto:yash@patentassist.ai"
+            className="text-dust hover:text-marquee transition-colors"
+          >
+            Email
+          </a>
+          <span className="text-dust/40">·</span>
+          <a
+            href="https://github.com/yashsuhagiya"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dust hover:text-marquee transition-colors"
+          >
+            GitHub
+          </a>
+          <span className="text-dust/40">·</span>
+          <a
+            href="https://www.linkedin.com/in/yashsuhagiya/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-dust hover:text-marquee transition-colors"
+          >
+            LinkedIn
+          </a>
+        </nav>
       </footer>
     </main>
   );
