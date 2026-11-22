@@ -4,6 +4,13 @@ A hand-curated list of movies for dumb charades nights — heavy on pre-1990 Bol
 
 Live: [https://dumb-charades-movies.vercel.app/](https://dumb-charades-movies.vercel.app/)
 
+<table>
+  <tr>
+    <td><img src=".github/screenshots/catalog-desktop.png" width="620" alt="Desktop view: genre filter chips, the Raise the Curtain button and a grid of movie cards with difficulty, year, tags and a mime hint"></td>
+    <td><img src=".github/screenshots/random-pick-mobile.png" width="180" alt="Mobile view: the curtain reveal showing a randomly picked movie with its difficulty and hint"></td>
+  </tr>
+</table>
+
 ## What's inside
 
 - **~250 movies** in [`data/movies.json`](data/movies.json) — each with difficulty (easy/medium/hard), language, industry, genres, year, and a short gestural hint for the actor.
